@@ -44,6 +44,24 @@
 // // Call the function to render products on page load
 // renderProducts();
 
+const removeActiveClass = () => {
+    const activeAllBtn = document.getElementsByClassName("active-trees");
+    for (const btn of activeAllBtn) {
+        btn.classList.remove("active-trees")
+    }
+}
+
+
+const handleLoadCategoriesData = (categoryId) => {
+    fetchPlantData(categoryId);
+
+    removeActiveClass();
+    const clickedBtn = document.getElementById(`category-btn-${categoryId}`);
+    clickedBtn.classList.add("active-trees")
+};
+// Todo : For Get the All Trees
+
+
 const fetchAllCategories = async () => {
     const res = await fetch('https://openapi.programming-hero.com/api/categories');
     const data = await res.json();
@@ -56,19 +74,19 @@ const displayCategories = (categories) => {
     const categoriesContainer = document.getElementById("categoriesContainer");
     categories.forEach(category => {
         const li = document.createElement("li");
-        li.innerHTML = ` <li class="py-2 px-3 bg-gray-100 mt-2 hover:text-white cursor-pointer rounded-md hover:bg-[#3A8D56]">${category?.category_name}</li>`
+        li.innerHTML = ` <li id=category-btn-${category.id} onclick="handleLoadCategoriesData(${category.id})" class="py-2 px-3 bg-gray-100 mt-2 hover:text-white cursor-pointer rounded-md hover:bg-[#3A8D56]">${category?.category_name}</li>`
         categoriesContainer.appendChild(li)
     });
 
-    console.log("Hello world")
 };
 
 const displayProducts = (products) => {
     const productsContainer = document.getElementById("productsContainer");
+    productsContainer.innerHTML = ``
     products.forEach(product => {
         const cardDiv = document.createElement("div");
-    cardDiv.classList = " bg-white rounded-lg p-4 card-shadow flex flex-col items-start"
-    cardDiv.innerHTML = `
+        cardDiv.classList = " bg-white rounded-lg p-4 card-shadow flex flex-col items-start"
+        cardDiv.innerHTML = `
     <div class="bg-gray-200 w-full h-40 rounded-lg">
     <img src=${product.image} alt=${product.name} class="h-full w-full object-cover rounded-lg" >
     </div>
@@ -78,17 +96,21 @@ const displayProducts = (products) => {
                         <span class="text-[#3A8D56] font-bold">৳${product.price}</span>
                         <button class="bg-[#3A8D56] text-white py-2 px-4 rounded-full text-sm hover:bg-[#2C6E4A]">Add to Cart</button>
                     </div>
-    `; 
+    `;
 
-    productsContainer.appendChild(cardDiv); 
+        productsContainer.appendChild(cardDiv);
     });
 };
-const fetchPlantData = async (category) => {
-    const url = category ? `https://openapi.programming-hero.com/api/category/${category.id}` : "https://openapi.programming-hero.com/api/plants";
+const fetchPlantData = async (categoryId) => {
+    const url = categoryId ? `https://openapi.programming-hero.com/api/category/${categoryId}` : "https://openapi.programming-hero.com/api/plants";
 
     const res = await fetch(url);
     const data = await res.json();
-    console.log("data of all Products using categories", data);
     displayProducts(data?.plants);
 };
-fetchPlantData(); 
+fetchPlantData();
+
+const allTreesCategoryBtn = document.getElementById("allTreesCategoryBtn");
+allTreesCategoryBtn.onclick = (e) => {
+    fetchPlantData();
+}

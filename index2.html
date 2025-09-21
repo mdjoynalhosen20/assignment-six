@@ -12,6 +12,11 @@
         .card-shadow {
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
         }
+
+        .active-trees {
+            background-color: #3A8D56 !important;
+            color: white;
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
@@ -51,7 +56,8 @@
             <div class="w-full md:w-1/4 bg-white rounded-lg p-6 card-shadow">
                 <h3 class="text-xl font-semibold mb-4">Categories</h3>
                 <ul id="categoriesContainer">
-                    <li class="bg-[#3A8D56] text-white rounded-md py-2 px-3 mb-2 font-semibold">All Trees</li>
+                    <li id="allTreesCategoryBtn" class="active-trees rounded-md py-2 px-3 mb-2 font-semibold">All Trees</li>
+                    <!-- <li id="allTreesCategoryBtn" class="bg-[#3A8D56] text-white rounded-md py-2 px-3 mb-2 font-semibold">All Trees</li> -->
                     <!-- <li class="py-2 px-3 bg-gray-100 hover:text-white cursor-pointer rounded-md hover:bg-[#3A8D56]">Fruit Trees</li>
                     <li class="py-2 px-3 bg-gray-100 hover:text-white cursor-pointer rounded-md hover:bg-[#3A8D56]">Flowering Trees</li>
                     <li class="py-2 px-3 bg-gray-100 hover:text-white cursor-pointer rounded-md hover:bg-[#3A8D56]">Shade Trees</li>
