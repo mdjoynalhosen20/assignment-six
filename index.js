@@ -44,6 +44,79 @@
 // // Call the function to render products on page load
 // renderProducts();
 
+
+
+
+// Cart Functionalyties Add 
+
+// Store Cart Products globally
+const cartProducts = [];
+
+
+const displayCartProducts = product => {
+    const cartListContainer = document.getElementById("cartListContainer");
+    const listItemElement = document.createElement("li");
+    listItemElement.classList = "flex justify-between items-center py-2 border-b border-gray-200"
+    listItemElement.innerHTML = `
+    <span>${product.productName}</span>
+                        <div class="flex items-center">
+                            <span class="text-gray-600 mr-2">৳${product.productPrice} x ${product.quantity}</span>
+                            <button class="text-gray-400 hover:text-red-500">x</button>
+                        </div>
+    `;
+
+    cartListContainer.appendChild(listItemElement);
+
+
+    const totalPriceElement = document.getElementById("totalPriceElement"); 
+    const existingTotalPrice = parseInt(totalPriceElement.innerText); 
+    const newTotalPrice = existingTotalPrice + product.productPrice; 
+    totalPriceElement.innerText = newTotalPrice; 
+    // products.forEach(product => {
+    //     const listItemElement = document.createElement("li");
+    //     listItemElement.classList = "flex justify-between items-center py-2 border-b border-gray-200"
+    //     listItemElement.innerHTML = `
+    // <span>${product.productName}</span>
+    //                     <div class="flex items-center">
+    //                         <span class="text-gray-600 mr-2">৳${product.productPrice} x ${product.quantity}</span>
+    //                         <button class="text-gray-400 hover:text-red-500">x</button>
+    //                     </div>
+    // `;
+
+    //     cartListContainer.appendChild(listItemElement);
+    // });
+}
+
+const handleAddToCartButton = (id,) => {
+    console.log("Button Clicked", id);
+    fetch(`https://openapi.programming-hero.com/api/plant/${id}`)
+        .then(res => res.json())
+        .then(data => {
+            const product = data.plants;
+            const cartProduct = { productId: product.id, productName: product.name, quantity: 1, productPrice: product.price };
+            cartProducts.push(cartProduct);
+            displayCartProducts(cartProduct); 
+            // cartProducts.forEach(sCartProduct => {
+            //     if(sCartProduct.id === cartProduct.id ) {
+            //         cartProduct.quantity = cartProduct.quantity + 1; 
+            //         console.log("If Console")
+            //     } else if (sCartProduct.id !== cartProduct.id ) {
+            //         cartProducts.push(cartProduct); 
+            //         console.log("Another Console or else conosle")
+            //     }
+            //     console.log("Success fully run this code")
+            // });
+
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+};
+
+
+
+
+
 const removeActiveClass = () => {
     const activeAllBtn = document.getElementsByClassName("active-trees");
     for (const btn of activeAllBtn) {
@@ -94,7 +167,7 @@ const displayProducts = (products) => {
                     <p class="text-sm text-gray-600 mt-1">${product.description}</p>
                     <div class="flex items-center justify-between w-full mt-4">
                         <span class="text-[#3A8D56] font-bold">৳${product.price}</span>
-                        <button class="bg-[#3A8D56] text-white py-2 px-4 rounded-full text-sm hover:bg-[#2C6E4A]">Add to Cart</button>
+                        <button id="product-${product.id}" onclick="handleAddToCartButton(${product.id})" class="bg-[#3A8D56] text-white py-2 px-4 rounded-full text-sm hover:bg-[#2C6E4A]">Add to Cart</button>
                     </div>
     `;
 
@@ -113,4 +186,12 @@ fetchPlantData();
 const allTreesCategoryBtn = document.getElementById("allTreesCategoryBtn");
 allTreesCategoryBtn.onclick = (e) => {
     fetchPlantData();
+};
+
+
+
+function handleAddToCart() {
+
 }
+
+
